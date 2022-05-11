@@ -71,61 +71,6 @@
       <input type="form-control" class="form-control" id="City" name="City" placeholder="City">
     </div>
 
-    <!-- <div class="form-floating">
-        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-            <option value="AL">Alabama</option>
-            <option value="AK">Alaska</option>
-            <option value="AZ">Arizona</option>
-            <option value="AR">Arkansas</option>
-            <option value="CA">California</option>
-            <option value="CO">Colorado</option>
-            <option value="CT">Connecticut</option>
-            <option value="DE">Delaware</option>
-            <option value="DC">District Of Columbia</option>
-            <option value="FL">Florida</option>
-            <option value="GA">Georgia</option>
-            <option value="HI">Hawaii</option>
-            <option value="ID">Idaho</option>
-            <option value="IL">Illinois</option>
-            <option value="IN">Indiana</option>
-            <option value="IA">Iowa</option>
-            <option value="KS">Kansas</option>
-            <option value="KY">Kentucky</option>
-            <option value="LA">Louisiana</option>
-            <option value="ME">Maine</option>
-            <option value="MD">Maryland</option>
-            <option value="MA">Massachusetts</option>
-            <option value="MI">Michigan</option>
-            <option value="MN">Minnesota</option>
-            <option value="MS">Mississippi</option>
-            <option value="MO">Missouri</option>
-            <option value="MT">Montana</option>
-            <option value="NE">Nebraska</option>
-            <option value="NV">Nevada</option>
-            <option value="NH">New Hampshire</option>
-            <option value="NJ">New Jersey</option>
-            <option value="NM">New Mexico</option>
-            <option value="NY">New York</option>
-            <option value="NC">North Carolina</option>
-            <option value="ND">North Dakota</option>
-            <option value="OH">Ohio</option>
-            <option value="OK">Oklahoma</option>
-            <option value="OR">Oregon</option>
-            <option value="PA">Pennsylvania</option>
-            <option value="RI">Rhode Island</option>
-            <option value="SC">South Carolina</option>
-            <option value="SD">South Dakota</option>
-            <option value="TN">Tennessee</option>
-            <option value="TX">Texas</option>
-            <option value="UT">Utah</option>
-            <option value="VT">Vermont</option>
-            <option value="VA">Virginia</option>
-            <option value="WA">Washington</option>
-            <option value="WV">West Virginia</option>
-            <option value="WI">Wisconsin</option>
-            <option value="WY">Wyoming</option>
-        </select>
-    </div> -->
 
     <div class="form-floating">
       <input class="form-control" id="State" name="State" placeholder="State">
@@ -159,34 +104,42 @@
 
 include 'connectDB.php';
 
-echo '<script> console.log("fuck php");</script>';
-
-echo '<script> console.log("' . $_POST['Password'] . $_POST['City'] . '"); </script>';
 
 if(isset($_POST['FirstName']) && isset($_POST['LastName'])&& isset($_POST['UserName']) && 
    isset($_POST['Password'])&& isset($_POST['ConfirmedPassword'])&& isset($_POST['City'])&& 
    isset($_POST['State'])&& isset($_POST['ZipCode'])&& isset($_POST['Country'])&& isset($_POST['Email'])&& 
    isset($_POST['PhoneNumber'])) {
 
-    echo '<script> console.log("fuck  fucking  php");</script>';
+      $FirstName=$_POST['FirstName'];
+      $LastName=$_POST['LastName'];
+      $UserName = $_POST['UserName'];
+      $Password = $_POST['Password'];
+      $ConfirmedPassword = $_POST['ConfirmedPassword'];
+      $City = $_POST['City'];
+      $State = $_POST['State'];
+      $ZipCode = $_POST['ZipCode'];
+      $Country = $_POST['Country'];
+      $Email = $_POST['Email'];
+      $PhoneNumber = $_POST['PhoneNumber'];
+      $Level = 'basic';
+      if($Password != $ConfirmedPassword){
+        echo '<script>alert("The Password is not the same, please enter again")</script>';
+        exit();
+      }
 
-    $FirstName=$_POST['FirstName'];
-    $LastName=$_POST['LastName'];
-    $Password = $_POST['Password'];
-    $ConfirmedPassword = $_POST['ConfirmedPassword'];
-    $City = $_POST['City'];
-    $State = $_POST['State'];
-    $ZipCode = $_POST['ZipCode'];
-    $Country = $_POST['Country'];
-    $Email = $_POST['Email'];
-    $PhoneNumber = $_POST['PhoneNumber'];
-
-    echo '<script> console.log("'.$FirstName.$LastName.$State.$PhoneNumber.'"); </script>'; 
-    //echo '<script> console.log("fuck php");</script>';
-   }
-      
-
-
+      $InsertNewUser = "INSERT INTO User (USERNAME, password, firstname, lastname, level, Email, city, state, country, phone) VALUES ('$UserName','$Password','$FirstName','$LastName','$Level','$Email','$City','$State','$Country','$PhoneNumber')";
+      if(mysqli_query($conn,$InsertNewUser)){
+        echo "New User Created";
+        header("Location: home.php");
+      }
+      else{
+        echo "Error in create new User";
+        exit();
+      }
+  }
+  
+   
+    
 ?>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
