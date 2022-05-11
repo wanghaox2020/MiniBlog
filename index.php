@@ -68,28 +68,36 @@
 </body>
 
 <?php
-$host = "localhost";
-$dbUsername = "root";
-$dbPassword = "wtx20150914";
-$dbName = "project";
+// $host = "localhost";
+// $dbUsername = "root";
+// $dbPassword = "wtx20150914";
+// $dbName = "project";
 
-$conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
+// $host = "localhost";
+// $dbUsername = "root";
+// $dbPassword = "Whx19961007.";
+// $dbName = "Project";
 
-if ($conn->connect_error) {
-  header("Location: Could not connect to the database Users.");
-  exit();
-}
+// $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
+
+// if ($conn->connect_error) {
+//   header("Location: Could not connect to the database Users.");
+//   exit();
+// }
+include 'connectDB.php';
 
 if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
   $usernameInput=$_POST['floatingInput'];
   $passwordInput=$_POST['floatingPassword'];
     
   if (empty($usernameInput)) {
-    header("Location: index.php?error=User Name is required");
+    //header("Location: index.php?error=User Name is required");
+    echo '<script>alert("Invalid Username Input")</script>';
     exit();
 
   }else if(empty($passwordInput)){
-    header("Location: index.php?error=Password is required");
+    //header("Location: index.php?error=Password is required");
+    echo '<script> alert ("Password is required ")</script>';
     exit();
   }else{
     //printf("usr: %s <br>", $usernameInput);
@@ -112,7 +120,8 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
       header("Location: home.php");
       exit();
     }else{
-      header("Location: index.php?error=Incorect User name or password");
+      //header("Location: index.php?error=Incorect User name or password");
+      echo '<script>alert("Invalid Username/Password, please try again!")</script>';
       exit();
     }
   }
