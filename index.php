@@ -12,32 +12,39 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     
     <!-- Bootstrap core CSS -->
-<link rel="stylesheet">
+    <link rel="stylesheet">
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
+      <style>
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          user-select: none;
         }
-      }
-    </style>
+
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+        
+      
+      </style>
 
     
     <!-- Custom styles for this template -->
     <link href="/source/css/signin.css" rel="stylesheet">
+
+    
   </head>
   <body class="text-center">
     
 <main class="form-signin">
   <form method="POST">
+
+     
+
     <img class="mb-4" src="/source/img/logo.jpg" alt="" width="180" height="auto">
 
     <div class="form-floating">
