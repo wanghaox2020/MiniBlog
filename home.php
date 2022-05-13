@@ -13,38 +13,112 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
 </head>
 <body>
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;"> 
+<div class="container-fluid">
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
     <a class="navbar-brand">Home</a>
-    <form class="form-inline">
+    <li class="nav-item">
+        <?php
+        if (isset($_GET['user'])) {
+            $username =$_GET['user'];
+        }else{
+            echo '<script>alert("No user name!")</script>';
+        } 
+        printf("<a class=\"nav-link\" href=\"userpost.php?user=%s\">My Post</a>", $username);
+        ?>
+    </li>
 
-    <!-- This is a comment 
-    <input class="form-control mr-sm-2" type="search" placeholder="Search your question!" aria-label="Search">
-    <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
-    -->
+    <li class="nav-item">
+        <?php
+        if (isset($_GET['user'])) {
+            $username =$_GET['user'];
+        }else{
+            echo '<script>alert("No user name!")</script>';
+        } 
+        printf("<a class=\"nav-link\" href=\"userquestion.php?user=%s\">My Answer</a>", $username);
+        ?>
+    </li>
 
+    <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Category
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <?php
+                include 'connectDB.php';
+                $select = "select tag_name
+                from Tag;";
+            
+                $stmt = $conn->prepare($select);
+                $stmt->execute();
+                $stmt->store_result();
+                $stmt->bind_result($tag_name);
+                if (isset($_GET['user'])) {
+                    $username =$_GET['user'];
+                }else{
+                    echo '<script>alert("No user name!")</script>';
+                }
+                if ($stmt->num_rows > 0){
+                    while ($row = $stmt->fetch()) {
+                        printf("<li><a class=\"dropdown-item\" href=\"/home.php?user=%s&category=%s\">%s</a></li>", $username, $tag_name, $tag_name);
+                    }
+                }
+                printf("<li><a class=\"dropdown-item\" href=\"/home.php?user=%s&category=all\">All</a></li>", $username);
+              ?>
+          </ul>
+    </li>
+
+    </ul>
+</div>
+    <form class="form-inline" method="POST">
     <div class="input-group">
         <div class="form-outline">
-            <input type="search" id="form1" class="form-control" placeholder="Search your question!"/>
+            <input type="search" id="form1" name="search" class="form-control" placeholder="Search your question!"/>
         </div>
-        <button type="button" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary">
         <i class="fas fa-search"></i>
         </button>
     </div>
-    
     <a href="/question.php" class="btn btn-info my-2 my-sm-0" style="margin:3px"> Post a new question</a>
     </form>
+</div>
 </nav>
 
 <?php
     include 'connectDB.php';
-    $select = "select *
-    from Question
-    order by DATE(question_time) desc;";
+    if(isset($_GET['category'])){
+        $category=$_GET['category'];
+    }else{
+        $category="all";
+    }
+    
+    if(isset($_POST['search'])){
+        $search=$_POST['search'];
+    }else{
+        $search="";
+    }
 
-    $stmt = $conn->prepare($select);
+    if ($category == "" || $category == "all"){
+        $select = "select *
+        from Question
+        where title like concat ('%', ?, '%')
+        order by DATE(question_time) desc;"; 
+        $stmt = $conn->prepare($select);
+        $stmt->bind_param('s', $search);
+    }else{
+        $select = "select question_id, uid, tag, title, body, question_time, status
+        from Question as q, Tag as t
+        where q.tag = t.tag_id
+        and t.tag_name = ?
+        and title like concat ('%', ?, '%')
+        order by DATE(question_time) desc;";
+        $stmt = $conn->prepare($select);
+        $stmt->bind_param('ss', $category, $search);
+    }
+    
     $stmt->execute();
     $stmt->store_result();
-    
     $stmt->bind_result($question_id, $uid, $tag, $title, $body, $question_time, $status);
 
     if ($stmt->num_rows > 0){
@@ -61,10 +135,12 @@
             </div>", $title, $body);
         }
     }
+
 ?>
 </body>
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 </html>

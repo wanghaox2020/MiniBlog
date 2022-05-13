@@ -42,9 +42,6 @@
     
 <main class="form-signin">
   <form method="POST">
-
-     
-
     <img class="mb-4" src="/source/img/logo.jpg" alt="" width="180" height="auto">
 
     <div class="form-floating">
@@ -75,22 +72,6 @@
 </body>
 
 <?php
-// $host = "localhost";
-// $dbUsername = "root";
-// $dbPassword = "wtx20150914";
-// $dbName = "project";
-
-// $host = "localhost";
-// $dbUsername = "root";
-// $dbPassword = "Whx19961007.";
-// $dbName = "Project";
-
-// $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
-
-// if ($conn->connect_error) {
-//   header("Location: Could not connect to the database Users.");
-//   exit();
-// }
 include 'connectDB.php';
 
 if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
@@ -124,7 +105,7 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
     $row = $stmt->fetch();
     //printf("%s", $password);
     if ($passwordInput == $password){
-      header("Location: home.php");
+      header("Location: home.php?user=$usernameInput");
       exit();
     }else{
       //header("Location: index.php?error=Incorect User name or password");
