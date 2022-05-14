@@ -108,8 +108,9 @@ if(!isset($_SESSION["username"])){
         $stmt->bind_param('s', $search);
     }else{
         $select = "select question_id, uid, username, tag, title, body, question_time, status
-        from Question as q, Tag as t
+        from Question as q, Tag as t, Users as u
         where q.tag = t.tag_id
+        and q.uid = u.user_id
         and t.tag_name = ?
         and title like concat ('%', ?, '%')
         order by DATE(question_time) desc;";
