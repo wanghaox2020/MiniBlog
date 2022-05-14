@@ -126,11 +126,11 @@ if(isset($_POST['FirstName']) && isset($_POST['LastName'])&& isset($_POST['UserN
         echo '<script>alert("The Password is not the same, please enter again")</script>';
         exit();
       }
-
+      
       $InsertNewUser = "INSERT INTO User (USERNAME, password, firstname, lastname, level, Email, city, state, country, phone) VALUES ('$UserName','$Password','$FirstName','$LastName','$Level','$Email','$City','$State','$Country','$PhoneNumber')";
       if(mysqli_query($conn,$InsertNewUser)){
         echo "New User Created";
-        header("Location: home.php?user=$UserName");
+        header("Location: index.php");
       }
       else{
         echo "Error in create new User";

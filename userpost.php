@@ -14,10 +14,13 @@
 </head>
 <body>
 <?php
-session_start();
-if(!isset($_SESSION["username"])){
-    header("Location: index.php");
-}
+    session_start();
+    if(!isset($_SESSION["username"])){
+        echo "<script>
+            alert('Log in first');
+            window.location.href='index.php';
+            </script>";
+    }
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
