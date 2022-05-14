@@ -16,7 +16,10 @@
 <?php
     session_start();
     if(!isset($_SESSION["username"])){
-        header("Location: index.php");
+        echo "<script>
+            alert('Log in first');
+            window.location.href='index.php';
+            </script>";
     }
 ?>
 

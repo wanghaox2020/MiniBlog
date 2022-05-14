@@ -14,10 +14,13 @@
 </head>
 <body>
 <?php
-session_start();
-if(!isset($_SESSION["username"])){
-    header("Location: index.php");
-}
+    session_start();
+    if(!isset($_SESSION["username"])){
+        echo "<script>
+            alert('Log in first');
+            window.location.href='index.php';
+            </script>";
+    }
 ?>
 <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;"> 
 <div class="container-fluid">
@@ -108,8 +111,9 @@ if(!isset($_SESSION["username"])){
         $stmt->bind_param('s', $search);
     }else{
         $select = "select question_id, uid, username, tag, title, body, question_time, status
-        from Question as q, Tag as t
+        from Question as q, Tag as t, Users as u
         where q.tag = t.tag_id
+        and q.uid = u.user_id
         and t.tag_name = ?
         and title like concat ('%', ?, '%')
         order by DATE(question_time) desc;";

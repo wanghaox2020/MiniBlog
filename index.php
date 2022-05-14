@@ -73,17 +73,14 @@
 </body>
 
 <?php
-  include 'connectDB.php';
+include 'connectDB.php';
   
 if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
-
   $usernameInput=$_POST['floatingInput']; 
   $passwordInput=$_POST['floatingPassword'];
   if (empty($usernameInput)) {
-    
     echo '<script>alert("Invalid Username Input")</script>';
   }else if(empty($passwordInput)){
-    
     echo '<script> alert ("Password is required ")</script>';
   }else{
     printf("usr: %s <br>", $usernameInput);
@@ -93,16 +90,11 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
     from Users as u
     where u.username = ?;";
 
-
     $stmt = $conn->prepare($select);
-    
     $stmt->bind_param('s', $usernameInput);
-
     $stmt->execute();
     $stmt->store_result();
-  
     $stmt->bind_result($password, $uid);
-    
     $row = $stmt->fetch();
     
     if ($passwordInput == $password){
@@ -112,7 +104,6 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
       $_SESSION["uid"] = $uid;
       header("Location: home.php");
     }else{
-      //header("Location: index.php?error=Incorect User name or password");
       echo '<script>alert("Invalid Username/Password, please try again!")</script>';
     }
   }
