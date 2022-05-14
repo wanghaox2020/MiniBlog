@@ -72,6 +72,9 @@ if(!isset($_SESSION["username"])){
         <i class="fas fa-search"></i>
         </button>
     </div>
+
+       
+
     <a href="/question.php" class="btn btn-info my-2 my-sm-0" style="margin:3px"> Post a new question</a>
 
     <a href="/logout.php" class="btn btn-info my-2 my-sm-0" style="margin:27px"> 
@@ -96,8 +99,7 @@ if(!isset($_SESSION["username"])){
     }
 
     if ($category == "" || $category == "all"){
-        $select = "select *
-        from Question
+        $select = "select * from Question
         where title like concat ('%', ?, '%')
         order by DATE(question_time) desc;"; 
         $stmt = $conn->prepare($select);
@@ -116,7 +118,7 @@ if(!isset($_SESSION["username"])){
     $stmt->execute();
     $stmt->store_result();
     $stmt->bind_result($question_id, $uid, $tag, $title, $body, $question_time, $status);
-
+    //$stmt->bind_result($question_id, $uid, $tag, $title, $body, $status);
     if ($stmt->num_rows > 0){
         while ($row = $stmt->fetch()) {
             printf(

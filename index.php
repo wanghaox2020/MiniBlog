@@ -35,9 +35,10 @@
     
     <!-- Custom styles for this template -->
     <link href="/source/css/signin.css" rel="stylesheet">
-
     
   </head>
+
+
 <body class="text-center">
     
 <main class="form-signin">
@@ -45,7 +46,7 @@
     <img class="mb-4" src="/source/img/logo.jpg" alt="" width="180" height="auto">
 
     <div class="form-floating">
-      <input class="form-control" id="floatingInput" name="floatingInput" placeholder="User Name">
+      <input type="text" class="form-control" id="floatingInput" name="floatingInput" placeholder="User Name">
     </div>
     <div class="form-floating">
       <input type="password" class="form-control" id="floatingPassword" name="floatingPassword" placeholder="Password">
@@ -72,35 +73,38 @@
 </body>
 
 <?php
-include 'connectDB.php';
-
+  include 'connectDB.php';
+  
 if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
-  $usernameInput=$_POST['floatingInput'];
+
+  $usernameInput=$_POST['floatingInput']; 
   $passwordInput=$_POST['floatingPassword'];
-    
   if (empty($usernameInput)) {
-    //header("Location: index.php?error=User Name is required");
+    
     echo '<script>alert("Invalid Username Input")</script>';
   }else if(empty($passwordInput)){
-    //header("Location: index.php?error=Password is required");
+    
     echo '<script> alert ("Password is required ")</script>';
   }else{
-    //printf("usr: %s <br>", $usernameInput);
-    //printf("password: %s <br>", $passwordInput); 
+    printf("usr: %s <br>", $usernameInput);
+    printf("password: %s <br>", $passwordInput); 
 
     $select = "select u.password, u.user_id
     from Users as u
     where u.username = ?;";
 
+
     $stmt = $conn->prepare($select);
+    
     $stmt->bind_param('s', $usernameInput);
+
     $stmt->execute();
     $stmt->store_result();
   
     $stmt->bind_result($password, $uid);
     
     $row = $stmt->fetch();
-    //printf("%s", $password);
+    
     if ($passwordInput == $password){
       session_start();
       $_SESSION["loggedin"] = true;
