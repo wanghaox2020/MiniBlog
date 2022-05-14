@@ -72,6 +72,9 @@ if(!isset($_SESSION["username"])){
         <i class="fas fa-search"></i>
         </button>
     </div>
+
+       
+
     <a href="/question.php" class="btn btn-info my-2 my-sm-0" style="margin:3px"> Post a new question</a>
 
     <a href="/logout.php" class="btn btn-info my-2 my-sm-0" style="margin:27px"> 
