@@ -105,8 +105,10 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
     $row = $stmt->fetch();
     //printf("%s", $password);
     if ($passwordInput == $password){
-      header("Location: home.php?user=$usernameInput");
-      exit();
+      session_start();
+      $_SESSION["loggedin"] = true;
+      $_SESSION["username"] = $usernameInput;
+      header("Location: home.php");
     }else{
       //header("Location: index.php?error=Incorect User name or password");
       echo '<script>alert("Invalid Username/Password, please try again!")</script>';

@@ -13,16 +13,17 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
 </head>
 <body>
+<?php
+session_start();
+if(!isset($_SESSION["username"])){
+    header("Location: index.php");
+}
+?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand"> 
         <?php
-        if (isset($_GET['user'])) {
-          $username =$_GET['user'];
-        }else{
-          echo '<script>alert("No user name!")</script>';
-        } 
-        printf("%s's post",$username)
+        printf("%s's post",$_SESSION["username"]);
         ?>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +32,7 @@
   </div>
 
   <?php
-  printf("<a href=\"/home.php?user=%s\" class=\"btn btn-info my-2 my-sm-0\" style=\"margin:3px;width: 125px;\"> Back home</a>", $username);
+  printf("<a href=\"/home.php\" class=\"btn btn-info my-2 my-sm-0\" style=\"margin:3px;width: 125px;\"> Back home</a>");
   ?>
 </nav>
 
@@ -42,7 +43,7 @@ $select = "select post_id, qid, uid, content, thumb_ups, post_time
         where p.uid = u.user_id
         and u.username = ?;";
 $stmt = $conn->prepare($select);
-$stmt->bind_param('s', $username);
+$stmt->bind_param('s', $_SESSION["username"]);
 $stmt->execute();
 $stmt->store_result();
 $stmt->bind_result($post_id, $qid, $uid, $content, $thumb_ups, $post_time);
@@ -54,10 +55,10 @@ if ($stmt->num_rows > 0){
       <div class=\"card mx-auto\" style=\"width: 80rem; margin:3px\">
       <div class=\"card-body\">
       <p class=\"card-text\">%s</p>
-      <a href=\"/post.php\" class=\"card-link\">View the question</a>
+      <a href=\"/post.php?qid=%s\" class=\"card-link\">View the question</a>
       </div>
       </div>
-      </div>", $content);
+      </div>", $content,$qid);
   }
 }
 
