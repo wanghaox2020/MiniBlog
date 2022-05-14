@@ -100,8 +100,7 @@
     }
 
     if ($category == "" || $category == "all"){
-        $select = "select *
-        from Question
+        $select = "select * from Question
         where title like concat ('%', ?, '%')
         order by DATE(question_time) desc;"; 
         $stmt = $conn->prepare($select);
@@ -120,7 +119,7 @@
     $stmt->execute();
     $stmt->store_result();
     $stmt->bind_result($question_id, $uid, $tag, $title, $body, $question_time, $status);
-
+    //$stmt->bind_result($question_id, $uid, $tag, $title, $body, $status);
     if ($stmt->num_rows > 0){
         while ($row = $stmt->fetch()) {
             printf(

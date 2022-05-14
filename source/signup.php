@@ -127,7 +127,7 @@ if(isset($_POST['FirstName']) && isset($_POST['LastName'])&& isset($_POST['UserN
         exit();
       }
 
-      $InsertNewUser = "INSERT INTO Users (USERNAME, password, firstname, lastname, level, Email, city, state, country, phone) VALUES ('$UserName','$Password','$FirstName','$LastName','$Level','$Email','$City','$State','$Country','$PhoneNumber')";
+      $InsertNewUser = "INSERT INTO User (USERNAME, password, firstname, lastname, level, Email, city, state, country, phone) VALUES ('$UserName','$Password','$FirstName','$LastName','$Level','$Email','$City','$State','$Country','$PhoneNumber')";
       if(mysqli_query($conn,$InsertNewUser)){
         echo "New User Created";
         header("Location: home.php?user=$UserName");

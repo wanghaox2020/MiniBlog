@@ -35,9 +35,10 @@
     
     <!-- Custom styles for this template -->
     <link href="/source/css/signin.css" rel="stylesheet">
-
     
   </head>
+
+
 <body class="text-center">
     
 <main class="form-signin">
@@ -45,7 +46,7 @@
     <img class="mb-4" src="/source/img/logo.jpg" alt="" width="180" height="auto">
 
     <div class="form-floating">
-      <input class="form-control" id="floatingInput" name="floatingInput" placeholder="User Name">
+      <input type="text" class="form-control" id="floatingInput" name="floatingInput" placeholder="User Name">
     </div>
     <div class="form-floating">
       <input type="password" class="form-control" id="floatingPassword" name="floatingPassword" placeholder="Password">
@@ -72,12 +73,21 @@
 </body>
 
 <?php
-include 'connectDB.php';
+  include 'connectDB.php';
+  
+  //  $username = $_POST['floatingInput'];
+  //  $passwordInput=$_POST['floatingPassword'];
+  //  print("the user name is: ".$username);
+  //  echo '<script> console.log('.$username.')</script>';  
+  //  echo '<script> console.log('.$passwordInput.')</script>';  
 
 if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
+
   $usernameInput=$_POST['floatingInput'];
+  echo '<script> console.log("fckyou")</script>';
   $passwordInput=$_POST['floatingPassword'];
-    
+  echo '<script> console.log('.$usernameInput.')</script>';  
+
   if (empty($usernameInput)) {
     //header("Location: index.php?error=User Name is required");
     echo '<script>alert("Invalid Username Input")</script>';
@@ -88,15 +98,15 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
     echo '<script> alert ("Password is required ")</script>';
     exit();
   }else{
-    //printf("usr: %s <br>", $usernameInput);
-    //printf("password: %s <br>", $passwordInput); 
+    printf("usr: %s <br>", $usernameInput);
+    printf("password: %s <br>", $passwordInput); 
 
-    $select = "select u.password
-    from Users as u
-    where u.username = ?;";
+    $select = "select u.password from Users as u where u.username = ?;";
 
     $stmt = $conn->prepare($select);
+    //echo '<script> console.log('.$usernameInput.')</script>';
     $stmt->bind_param('s', $usernameInput);
+
     $stmt->execute();
     $stmt->store_result();
   
