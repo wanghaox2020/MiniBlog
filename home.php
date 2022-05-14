@@ -20,8 +20,10 @@
     <a class="navbar-brand">Home</a>
     <li class="nav-item">
         <?php
+        session_start();
         if (isset($_GET['user'])) {
-            $username =$_GET['user'];
+            $username = $_GET['user'];
+            $_SESSION['user'] = $username;
         }else{
             echo '<script>alert("No user name!")</script>';
         } 
@@ -80,6 +82,9 @@
         <i class="fas fa-search"></i>
         </button>
     </div>
+
+       
+
     <a href="/question.php" class="btn btn-info my-2 my-sm-0" style="margin:3px"> Post a new question</a>
     </form>
 </div>

@@ -75,12 +75,6 @@
 <?php
   include 'connectDB.php';
   
-  //  $username = $_POST['floatingInput'];
-  //  $passwordInput=$_POST['floatingPassword'];
-  //  print("the user name is: ".$username);
-  //  echo '<script> console.log('.$username.')</script>';  
-  //  echo '<script> console.log('.$passwordInput.')</script>';  
-
 if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
 
   $usernameInput=$_POST['floatingInput'];
@@ -89,12 +83,12 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
   echo '<script> console.log('.$usernameInput.')</script>';  
 
   if (empty($usernameInput)) {
-    //header("Location: index.php?error=User Name is required");
+    
     echo '<script>alert("Invalid Username Input")</script>';
     exit();
 
   }else if(empty($passwordInput)){
-    //header("Location: index.php?error=Password is required");
+    
     echo '<script> alert ("Password is required ")</script>';
     exit();
   }else{
@@ -104,7 +98,7 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
     $select = "select u.password from Users as u where u.username = ?;";
 
     $stmt = $conn->prepare($select);
-    //echo '<script> console.log('.$usernameInput.')</script>';
+    
     $stmt->bind_param('s', $usernameInput);
 
     $stmt->execute();
@@ -113,7 +107,7 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
     $stmt->bind_result($password);
     
     $row = $stmt->fetch();
-    //printf("%s", $password);
+    
     if ($passwordInput == $password){
       header("Location: home.php?user=$usernameInput");
       exit();
