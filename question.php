@@ -7,7 +7,7 @@
             /* margin-left: auto;
             margin-right: auto; */
             margin: auto;
-            width: 50%;
+            width: 80%;
         }
         h1 {
             margin: inherit;
@@ -16,26 +16,34 @@
             font-size: 30pt;
             }
 
-        .form-inline {
-            margin: inherit;
-            width:inherit;
+        /* .form-inline {
+            margin: 0;
+            width: 100%;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        } */
+        form {
+            display:flex;
+            flex-direction:column;
+            align-item: center;
+            justify-conecnt: column;
         }
+
         p{ text-align: left;
             font-size: 15pt;
         }
+
         div{
-            width: 15pt;
+            width: 100%;
         }
-        .div1 {
-            text-align:center;
-            width: 300px;
-            height: 100px;
-            border: 1px solid black;
+
+        button {
+            width: 50%;
+            margin: 10pt;
         }
+        
     </style>  
 </head>
 
@@ -44,15 +52,15 @@
 <section>
   <h1 class="text-center mb-8 pb-2 text-primary fw-bold">Post A new Question </h3>
     <p class="text-center mb-5">Please type your question</p>
-    <form class="form-inline" method="POST">
-            <div>
-                <Input class = "text" type = "text" method = POST placeholder = "Please enter question title here"></Input>
+    <form method="POST">
+            <div class="mb-3">
+                <label for="question-title" class="form-label">Question Title</label>
+                <input class = "form-control" type = "text" method = POST placeholder = "Please enter question title here">
             </div>
-
-            <div class = "div1" >
-                <Input class = "div1" type = "text" method = POST placeholder = "please enter your question here"> </Input>
-                <button type = "button" > submit </button>
-            </div1>
+            <div class="mb-3">
+                <label for="question-content" class="form-label">Enter your question below</label>
+                <textarea class="form-control" type = "text" method = POST placeholder = "please enter your question here"></textarea>
+            </div>
 
             <label for = "TagName"> Select a Question Tag: </label>
                 <select class = "form-select" name = "tagname" id = "tagname">
@@ -67,6 +75,7 @@
                     ?>
                 
                 </select>
+                <button type = "button" class="btn btn-primary"> submit </button>
             </form>
 </section>
 <!--Section: insert question-->
