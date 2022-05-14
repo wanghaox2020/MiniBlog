@@ -44,7 +44,7 @@ $select = "select question_id, uid, tag, title, body, question_time, status
         where q.uid = u.user_id
         and u.username = ?;";
 $stmt = $conn->prepare($select);
-$stmt->bind_param('s', $username);
+$stmt->bind_param('s', $_SESSION["username"]);
 $stmt->execute();
 $stmt->store_result();
 $stmt->bind_result($question_id, $uid, $tag, $title, $body, $question_time, $status);
@@ -55,11 +55,18 @@ if ($stmt->num_rows > 0){
       "<div class=\"card-group\" style=\"display: inline-block;\">
       <div class=\"card mx-auto\" style=\"width: 80rem; margin:3px\">
       <div class=\"card-body\">
+      <h5 class=\"card-title\">%s</h5>
       <p class=\"card-text\">%s</p>
-      <a href=\"/post.php?qid=%s\" class=\"card-link\">View the question</a>
+      <div style=\"display: inline-flex\">
+      <a href=\"/post.php?qid=%s\" class=\"card-link\" style=\"margin: 5px;\">View the question</a>
+      <p class=\"card-text\" style=\"margin: 5px;\">(%s)</p> 
+      </div>
+      <div style=\"display: inline-flex;float: right;\">
+        <p class=\"card-text\" style=\"margin: 5px;\" >%s</p> 
       </div>
       </div>
-      </div>", $body, $question_id);
+      </div>
+      </div>", $title, $body, $question_id, $status, $question_time);
   }
 }
 

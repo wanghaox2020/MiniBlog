@@ -28,13 +28,13 @@ if(!isset($_SESSION["username"])){
     ?>
     <li class="nav-item">
         <?php
-        printf("<a class=\"nav-link\" href=\"userpost.php\">My Post</a>");
+        printf("<a class=\"nav-link\" href=\"userpost.php\">My Posts</a>");
         ?>
     </li>
 
     <li class="nav-item">
         <?php
-        printf("<a class=\"nav-link\" href=\"userquestion.php\">My Answer</a>");
+        printf("<a class=\"nav-link\" href=\"userquestion.php\">My Questions</a>");
         ?>
     </li>
 
@@ -66,7 +66,7 @@ if(!isset($_SESSION["username"])){
     <form class="form-inline" method="POST">
     <div class="input-group">
         <div class="form-outline">
-            <input type="search" id="form1" name="search" class="form-control" placeholder="Search your question!" style="width: 40rem;"/>
+            <input type="search" id="form1" name="search" class="form-control" placeholder="Search your question!" style="width: 38rem;"/>
         </div>
         <button type="submit" class="btn btn-primary">
         <i class="fas fa-search"></i>
@@ -99,13 +99,15 @@ if(!isset($_SESSION["username"])){
     }
 
     if ($category == "" || $category == "all"){
-        $select = "select * from Question
+        $select = "select question_id, uid, username, tag, title, body, question_time, status 
+        from Question as q, Users as u
         where title like concat ('%', ?, '%')
+        and q.uid = u.user_id
         order by DATE(question_time) desc;"; 
         $stmt = $conn->prepare($select);
         $stmt->bind_param('s', $search);
     }else{
-        $select = "select question_id, uid, tag, title, body, question_time, status
+        $select = "select question_id, uid, username, tag, title, body, question_time, status
         from Question as q, Tag as t
         where q.tag = t.tag_id
         and t.tag_name = ?
@@ -117,20 +119,27 @@ if(!isset($_SESSION["username"])){
     
     $stmt->execute();
     $stmt->store_result();
-    $stmt->bind_result($question_id, $uid, $tag, $title, $body, $question_time, $status);
-    //$stmt->bind_result($question_id, $uid, $tag, $title, $body, $status);
+    $stmt->bind_result($question_id, $uid, $username, $tag, $title, $body, $question_time, $status);
+
     if ($stmt->num_rows > 0){
         while ($row = $stmt->fetch()) {
             printf(
             "<div class=\"card-group\" style=\"display: inline-block;\">
-            <div class=\"card mx-auto\" style=\"width: 80rem; margin:3px\">
-            <div class=\"card-body\">
-            <h5 class=\"card-title\">%s</h5>
-            <p class=\"card-text\">%s</p>
-            <a href=\"/post.php?qid=%s\" class=\"card-link\">View the question</a>
-            </div>
-            </div>
-            </div>", $title, $body, $question_id);
+                <div class=\"card mx-auto\" style=\"width: 80rem; margin:3px\">
+                    <div class=\"card-body\">
+                    <h5 class=\"card-title\">%s</h5>
+                    <p class=\"card-text\">%s</p>
+                    <div style=\"display: inline-flex\">
+                        <a href=\"/post.php?qid=%s\" class=\"card-link\" style=\"margin: 5px;\">View the question</a>
+                        <p class=\"card-text\" style=\"margin: 5px;\">(%s)</p> 
+                    </div>
+                    <div style=\"display: inline-flex;float: right;\">
+                    <p class=\"card-text\" style=\"margin: 5px;\" >%s</p> 
+                    <p class=\"card-text\" style=\"margin: 5px;\">%s</p>
+                    </div>
+                    </div>
+                </div>
+            </div>", $title, $body, $question_id, $status, $username, $question_time);
         }
     }
 
