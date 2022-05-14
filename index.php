@@ -77,11 +77,8 @@
   
 if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
 
-  $usernameInput=$_POST['floatingInput'];
-  echo '<script> console.log("fckyou")</script>';
+  $usernameInput=$_POST['floatingInput']; 
   $passwordInput=$_POST['floatingPassword'];
-  echo '<script> console.log('.$usernameInput.')</script>';  
-
   if (empty($usernameInput)) {
     
     echo '<script>alert("Invalid Username Input")</script>';
