@@ -6,44 +6,40 @@
     <meta name="description">
     <meta name="author">
     <meta name="generator" content="Hugo 0.88.1">
-    <title>Signin</title>
+    <title>Home</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
 </head>
 <body>
+<?php
+session_start();
+if(!isset($_SESSION["username"])){
+    header("Location: index.php");
+}
+?>
 <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;"> 
 <div class="container-fluid">
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-    <a class="navbar-brand">Home</a>
+    <?php
+    printf("<a class=\"navbar-brand\" href=\"home.php?category=all\">Home</a>");
+    ?>
     <li class="nav-item">
         <?php
-        session_start();
-        if (isset($_GET['user'])) {
-            $username = $_GET['user'];
-            $_SESSION['user'] = $username;
-        }else{
-            echo '<script>alert("No user name!")</script>';
-        } 
-        printf("<a class=\"nav-link\" href=\"userpost.php?user=%s\">My Post</a>", $username);
+        printf("<a class=\"nav-link\" href=\"userpost.php\">My Post</a>");
         ?>
     </li>
 
     <li class="nav-item">
         <?php
-        if (isset($_GET['user'])) {
-            $username =$_GET['user'];
-        }else{
-            echo '<script>alert("No user name!")</script>';
-        } 
-        printf("<a class=\"nav-link\" href=\"userquestion.php?user=%s\">My Answer</a>", $username);
+        printf("<a class=\"nav-link\" href=\"userquestion.php\">My Answer</a>");
         ?>
     </li>
 
     <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Category
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -56,27 +52,21 @@
                 $stmt->execute();
                 $stmt->store_result();
                 $stmt->bind_result($tag_name);
-                if (isset($_GET['user'])) {
-                    $username =$_GET['user'];
-                }else{
-                    echo '<script>alert("No user name!")</script>';
-                }
                 if ($stmt->num_rows > 0){
                     while ($row = $stmt->fetch()) {
-                        printf("<li><a class=\"dropdown-item\" href=\"/home.php?user=%s&category=%s\">%s</a></li>", $username, $tag_name, $tag_name);
+                        printf("<li><a class=\"dropdown-item\" href=\"/home.php?category=%s\">%s</a></li>", $tag_name, $tag_name);
                     }
                 }
-                printf("<li><a class=\"dropdown-item\" href=\"/home.php?user=%s&category=all\">All</a></li>", $username);
+                printf("<li><a class=\"dropdown-item\" href=\"/home.php?category=all\">All</a></li>");
               ?>
           </ul>
     </li>
-
     </ul>
 </div>
     <form class="form-inline" method="POST">
     <div class="input-group">
         <div class="form-outline">
-            <input type="search" id="form1" name="search" class="form-control" placeholder="Search your question!"/>
+            <input type="search" id="form1" name="search" class="form-control" placeholder="Search your question!" style="width: 40rem;"/>
         </div>
         <button type="submit" class="btn btn-primary">
         <i class="fas fa-search"></i>
@@ -86,6 +76,10 @@
        
 
     <a href="/question.php" class="btn btn-info my-2 my-sm-0" style="margin:3px"> Post a new question</a>
+
+    <a href="/logout.php" class="btn btn-info my-2 my-sm-0" style="margin:27px"> 
+    Log Out
+    </a>
     </form>
 </div>
 </nav>
@@ -133,10 +127,10 @@
             <div class=\"card-body\">
             <h5 class=\"card-title\">%s</h5>
             <p class=\"card-text\">%s</p>
-            <a href=\"/post.php\" class=\"card-link\">View the question</a>
+            <a href=\"/post.php?qid=%s\" class=\"card-link\">View the question</a>
             </div>
             </div>
-            </div>", $title, $body);
+            </div>", $title, $body, $question_id);
         }
     }
 
