@@ -81,17 +81,14 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
   if (empty($usernameInput)) {
     //header("Location: index.php?error=User Name is required");
     echo '<script>alert("Invalid Username Input")</script>';
-    exit();
-
   }else if(empty($passwordInput)){
     //header("Location: index.php?error=Password is required");
     echo '<script> alert ("Password is required ")</script>';
-    exit();
   }else{
     //printf("usr: %s <br>", $usernameInput);
     //printf("password: %s <br>", $passwordInput); 
 
-    $select = "select u.password
+    $select = "select u.password, u.user_id
     from Users as u
     where u.username = ?;";
 
@@ -100,7 +97,7 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
     $stmt->execute();
     $stmt->store_result();
   
-    $stmt->bind_result($password);
+    $stmt->bind_result($password, $uid);
     
     $row = $stmt->fetch();
     //printf("%s", $password);
@@ -108,11 +105,11 @@ if(isset($_POST['floatingInput']) && isset($_POST['floatingPassword'])) {
       session_start();
       $_SESSION["loggedin"] = true;
       $_SESSION["username"] = $usernameInput;
+      $_SESSION["uid"] = $uid;
       header("Location: home.php");
     }else{
       //header("Location: index.php?error=Incorect User name or password");
       echo '<script>alert("Invalid Username/Password, please try again!")</script>';
-      exit();
     }
   }
 }

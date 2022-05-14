@@ -66,13 +66,17 @@ if(!isset($_SESSION["username"])){
     <form class="form-inline" method="POST">
     <div class="input-group">
         <div class="form-outline">
-            <input type="search" id="form1" name="search" class="form-control" placeholder="Search your question!"/>
+            <input type="search" id="form1" name="search" class="form-control" placeholder="Search your question!" style="width: 40rem;"/>
         </div>
         <button type="submit" class="btn btn-primary">
         <i class="fas fa-search"></i>
         </button>
     </div>
     <a href="/question.php" class="btn btn-info my-2 my-sm-0" style="margin:3px"> Post a new question</a>
+
+    <a href="/logout.php" class="btn btn-info my-2 my-sm-0" style="margin:27px"> 
+    Log Out
+    </a>
     </form>
 </div>
 </nav>
